@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { time } from "node:console";
 
 //before each pour init le meme setup !
 
@@ -24,7 +25,11 @@ test("On fait des emplettes", async ({ page }) => {
 
     const bs = await page.getByRole("button", { name: /add to cart/i });
     console.log(await bs.count());
-    await bs.nth(1).click();
+    // await bs.nth(1).click();
+
+    for (const e of await bs.all()) {
+        await e.click();
+    }
 
     await page.getByTestId("shopping-cart-link").click();
     await expect(page.getByTestId("inventory-item-name")).toBeVisible();
