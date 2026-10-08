@@ -122,3 +122,44 @@ test("Adder 1 article, checkouter, expecter le message de validation", async ({ 
         "Thank you for your order!",
     );
 });
+
+test("Quand on clique sur une image on arrive sur le bon article", async ({ page }) => {
+    //correction
+    // const articles = await page.getByTestId("inventory-item");
+    // for (const article of await articles.all()) {
+    //     const texte = await article.getByTestId("inventory-item-name")
+    //         .innerText();
+    //     await article.getByRole("img").click();
+    //     await expect(page.getByTestId("inventory-item-name")).toHaveText(texte);
+    //     await page.getByTestId("back-to-products").click();
+    // }
+
+    // await page.goto("https://www.saucedemo.com/inventory.html");
+
+    const articles = page.getByTestId("inventory-item");
+    console.log(await articles.count());
+
+    for (const a of await articles.all()) {
+        const img = a.getByRole("img");
+        const itemName = await a.getByTestId("inventory-item-name").innerText();
+        console.log(itemName);
+
+        await img.click();
+
+        const currurl = page.url();
+        const parsedUrl = new URL(currurl);
+        const id = parsedUrl.searchParams.get("id");
+        console.log(id);
+
+        expect(page.url()).toBe(
+            `https://www.saucedemo.com/inventory-item.html?id=${id}`,
+        );
+        // await expect(img).toBeVisible();
+        await expect(page.getByTestId("inventory-item-name")).toBeVisible();
+        await expect(page.getByTestId("inventory-item-name")).toContainText(
+            itemName,
+        );
+
+        await page.goBack();
+    }
+});
