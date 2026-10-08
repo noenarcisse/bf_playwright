@@ -27,21 +27,40 @@ test("lustin bridou", async ({ page }) => {
   console.log("LISTBOXES : " + await b.count());
 
   const listFromOptions = page.getByRole("option");
-  // const listFromOptions = page.getByRole("listitem", { name: /lus/i });
   await listFromOptions.nth(1).click();
 
-  await to.pressSequentially("bruxelles", { timeout: 6_000 });
-  await page.waitForTimeout(6_000);
+  await to.pressSequentially("frappe", { timeout: 5_000 });
+  await page.waitForTimeout(5_000);
   const listToOptions = page.getByRole("option");
-  // await expect(listToOptions).toBeVisible();
 
-  await listToOptions.nth(1).click();
+  await listToOptions.nth(3).click();
+
+  const partirAtButton = page.getByRole("button", {
+    name: /partir maintenant/i,
+  });
+
+  await partirAtButton.click();
+
+  //attention chantier
+  const hours = `${new Date(Date.now()).getHours()} : ${
+    new Date(Date.now()).getMinutes()
+  }`;
+  const regHours = new RegExp(`${new Date(Date.now()).getHours()} : `);
+  // const hourInput = page.getByRole("textbox", { name: "Heure de départ" });
+  // console.log(await hourInput.count());
+
+  //fin des travaux
+
+  await page.getByRole("textbox", { name: "Heure de départ" }).fill("17:00");
+  await page.getByRole("button", { name: "Valider" }).click();
 
   const submitButton = page.getByRole("button", { name: /calculer/i });
-  console.log(await submitButton.count());
+  // console.log(await submitButton.count());
   await submitButton.click();
 
   await expect(page.getByText("planification")).toBeVisible({
     timeout: 10_000,
   });
+
+  await page.waitForTimeout(5_000);
 });
