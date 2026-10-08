@@ -52,3 +52,11 @@ test("test de dropdown", async ({ page }) => {
     await expect(page).toHaveURL(/#some-action/);
     await expect(drop).toHaveValue("Belgium");
 });
+
+test("test de keyboard", async ({ page }) => {
+    await page.goto(Url("auth_ecommerce"));
+    const heading = page.getByRole("heading", { level: 2 });
+    await heading.selectText();
+    await page.keyboard.press("Control+C");
+    await page.getByRole("textbox").first().press("Control+V");
+});

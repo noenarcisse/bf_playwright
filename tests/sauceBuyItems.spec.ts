@@ -163,3 +163,21 @@ test("Quand on clique sur une image on arrive sur le bon article", async ({ page
         await page.goBack();
     }
 });
+
+test("test de tri des prix", async ({ page }) => {
+    //bonus verifier le montant total qui est correct
+
+    const filter = page.getByTestId("product-sort-container");
+    await filter.selectOption("lohi");
+    const prices = page.getByTestId("inventory-item-price");
+
+    let prev: number = 0;
+
+    for (const p of await prices.all()) {
+        let price = await p.innerText();
+        price = price.slice(1);
+        const priceNum = parseFloat(price);
+        expect(priceNum).toBeGreaterThanOrEqual(prev);
+        prev = priceNum;
+    }
+});
