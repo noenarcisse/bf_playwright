@@ -43,10 +43,10 @@ test("Lustin Bridou", async ({ page }) => {
   await partirAtButton.click();
 
   //attention chantier
-  const hours = `${new Date(Date.now()).getHours()} : ${
-    new Date(Date.now()).getMinutes()
-  }`;
-  const regHours = new RegExp(`${new Date(Date.now()).getHours()} : `);
+  // const hours = `${new Date(Date.now()).getHours()} : ${
+  //   new Date(Date.now()).getMinutes()
+  // }`;
+  // const regHours = new RegExp(`${new Date(Date.now()).getHours()} : `);
   // const hourInput = page.getByRole("textbox", { name: "Heure de départ" });
   // console.log(await hourInput.count());
 

@@ -61,6 +61,28 @@ test("lien correspond au titre de l'article", async ({ page }) => {
     });
 
     await expect(titre).toBeVisible();
+
+    // correction :
+    // en utilisant le tohaveurl, ca encode ce qu'il faut direct :D
+    // du coup on peut get le titre, le coller direct apres l'url et good to go
+    // -> await expect(page).toHaveURL("https://fr.wikipedia.org/wiki/"+titre)
+});
+
+test("lien correspond au titre de l'article - fixed", async ({ page }) => {
+    //utiliser l'article au hasard en cliquant sur le bouton pour
+    await page.goto(
+        "https://fr.wikipedia.org/wiki/Sp%C3%A9cial:Page_au_hasard",
+    );
+    const titre = page.getByRole("heading", {
+        level: 1,
+    });
+
+    const escaped = (await titre.innerText()).replaceAll(" ", "_");
+
+    await expect(titre).toBeVisible();
+    await expect(page).toHaveURL(
+        "https://fr.wikipedia.org/wiki/" + escaped,
+    );
 });
 
 test("tester le premier lien d'un article", async ({ page }) => {
@@ -72,11 +94,13 @@ test("tester le premier lien d'un article", async ({ page }) => {
 
     const url1 = page.url();
 
-    const article = page.locator("#bodyContent");
+    // const article = page.locator("#bodyContent");
+    const article = page.locator("#mw-content-text");
     const firstlink = article.getByRole("link").first();
 
     await firstlink.click();
     const url2 = page.url();
 
+    await page.waitForTimeout(3000);
     expect(url1).not.toBe(url2);
 });
