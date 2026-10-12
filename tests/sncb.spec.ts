@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 const url = "https://www.letec.be/";
 
-test("lustin bridou", async ({ page }) => {
+test("Lustin Bridou", async ({ page }) => {
   //lustin -> gare du midi 17: h arrivée, verifier si les heures sont bien dans l'ordre
   //on ecrit lus dans la recherche et on clique dans l'auto complete
 
@@ -29,11 +29,12 @@ test("lustin bridou", async ({ page }) => {
   const listFromOptions = page.getByRole("option");
   await listFromOptions.nth(1).click();
 
-  await to.pressSequentially("frappe", { timeout: 5_000 });
-  await page.waitForTimeout(5_000);
+  await to.fill("frapp");
+  await to.press("e");
+  // await page.waitForTimeout(5_000);
   const listToOptions = page.getByRole("option");
 
-  await listToOptions.nth(3).click();
+  await listToOptions.nth(1).click();
 
   const partirAtButton = page.getByRole("button", {
     name: /partir maintenant/i,
@@ -62,5 +63,25 @@ test("lustin bridou", async ({ page }) => {
     timeout: 10_000,
   });
 
-  await page.waitForTimeout(5_000);
+  await page.waitForTimeout(10_000);
+
+  page.getByRole("tabpanel", { name: "Rapide" }).getByText(
+    "Résultats de recherche",
+  );
+  const heuresFound = page.getByRole("link", {
+    name: /\d{2}:\d{2}\s+\d{2}:\d{2}/,
+  });
+  const horaires = [];
+
+  for (const h of await heuresFound.all()) {
+    await expect(h).toBeVisible();
+
+    const hSplit = (await h.innerText()).split("\n");
+    const d = hSplit[0];
+    const e = hSplit[1];
+
+    horaires.push({ "debut": d, "fin": e });
+  }
+
+  console.log(horaires);
 });
