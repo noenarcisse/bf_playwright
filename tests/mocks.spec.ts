@@ -57,3 +57,13 @@ test("truc3", async ({ page }) => {
     await expect(page.getByText("Banana")).toBeVisible();
     await expect(page.getByText("Fraise")).toBeVisible();
 });
+
+test("test har", async ({ page }) => {
+    await page.routeFromHAR("har/fruits.har", {
+        url: "*/**/api/v1/fruits",
+        update: true,
+    });
+
+    await page.goto("https://demo.playwright.dev/api-mocking/");
+    await expect(page.getByText("Banana")).toBeVisible();
+});
