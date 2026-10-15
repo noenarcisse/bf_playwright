@@ -41,34 +41,34 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
-      name: "setup",
-      testMatch: /.*\.setup\.ts/,
+      name: "setup admin",
+      testMatch: "admin.setup.ts",
     },
     {
-      name: "chromium-auth",
+      name: "chromium-admin",
       use: {
         ...devices["Desktop Chrome"],
-        storageState: "playwright/.auth/auth.json",
+        storageState: "playwright/.auth/EF_admin.json",
       },
-      dependencies: ["setup"],
-      testMatch: /.+\.auth\.spec\.ts/,
+      dependencies: ["setup admin"],
+      testMatch: /.+\.admin\.spec\.ts/,
     },
     {
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
-      testIgnore: /.*\.auth\.spec\.ts/,
+      testIgnore: /.+\.admin\.spec\.ts/,
     },
 
     {
       name: "firefox",
       use: { ...devices["Desktop Firefox"] },
-      testIgnore: /.*\.auth\.spec\.ts/,
+      testIgnore: /.+\.admin\.spec\.ts/,
     },
 
     {
       name: "webkit",
       use: { ...devices["Desktop Safari"] },
-      testIgnore: /.*\.auth\.spec\.ts/,
+      testIgnore: /.+\.admin\.spec\.ts/,
     },
     /* Test against mobile viewports. */
     // {

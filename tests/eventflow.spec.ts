@@ -1,4 +1,4 @@
-import { expect, Locator, test } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 type Ticket = {
     price: number;
